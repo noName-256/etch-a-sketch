@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="javascript.js" defer></script>
+    <title>Etch-A-Sketch</title>
+</head>
+
+<body>
+    <div class="flexbox-column">
+        <div class="title">Etch-A-Sketch</div>
+        <div class="content flexbox-row">
+            <div class="options flexbox-column" style="gap: 1rem">
+                <div class="color-options flexbox-column" style="gap: 1rem; margin-bottom: 4rem;">
+                    <div class="background-color flexbox-column">
+                        <div class="option-text">Background color:</div>
+                        <input type="color" value="#dcdcdc" class="color-button"></input>
+                    </div>
+                    <div class="color-1 flexbox-column">
+                        <div class="option-text">Color:</div>
+                        <input type="color" value="#000000" class="color-button"></input>
+                    </div>
+                    <div class="color-2 flexbox-column">
+                        <div class="option-text-and-help flexbox-row">
+                            <div class="option-text">Secondary color:</div>
+                            <span><img class="help-icon" title="Hold ctrl+click for the secondary color"
+                                    src="question-mark-icon.png.png"></span>
+                        </div>
+                        <input type="color" value="#ffffff" class="color-button"></input>
+                    </div>
+                </div>
+                <button class="switch-colors option-button">Switch colors</button>
+                <button class="rainbow-mode option-button">Rainbow mode</button>
+                <button class="erase option-button">Eraser</button>
+                <button class="bucket-fill option-button">Bucket fill</button>
+                <button class="clear option-button">Clear</button>
+                <div class="range-and-text flexbox-column">
+                    <input type="range" min="1" max="64" value="16" class="slider">
+                    <div class="range-value-display">16*16</div>
+                </div>
+            </div>
+            <div class="grid"></div>
+        </div>
+    </div>
+</body>
+
+</html>
