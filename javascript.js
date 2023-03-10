@@ -127,3 +127,13 @@ function toggleEraser()
     }
 }
 erase.addEventListener("click", toggleEraser);
+
+function clearGrid()
+{
+    for(row of gridArray)
+    {
+        for(element of row)
+            element.style.backgroundColor=backgroundColor;
+    }
+}
+clear.addEventListener("click", clearGrid());
