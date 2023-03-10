@@ -4,6 +4,7 @@ let rainbowMode=document.querySelector(".rainbow-mode");
 let bucketFill=document.querySelector(".bucket-fill");
 let erase=document.querySelector(".erase");
 let clear=document.querySelector(".clear");
+let gridLinesSwitch=document.querySelector(".grid-lines");
 let rangeSlider=document.querySelector(".slider");
 let rangeDisplay=document.querySelector(".range-value-display");
 let primaryColorElement=document.querySelector(".color-1 input");
@@ -159,3 +160,10 @@ function resizeGrid(newSize)
     createGrid(newSize);
 }
 rangeSlider.addEventListener("change", ()=>{resizeGrid(rangeSlider.value)});
+
+function gridLinesToggle()
+{
+    gridLinesSwitch.classList.toggle("active-button");
+    grid.classList.toggle("with-borders");
+}
+gridLinesSwitch.addEventListener("click", gridLinesToggle);

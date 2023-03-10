@@ -102,5 +102,8 @@ button:hover
 .grid > * > *
 {
     flex: 1 1 auto;
+}
+.grid.with-borders > * > *
+{
     border: 1px solid black;
 }
