@@ -2,6 +2,10 @@
 {
     font-family: 'Courier New', Courier, monospace;
 }
+body
+{
+    padding-top: 1%;
+}
 .title
 {
     text-align: center;
@@ -54,7 +58,7 @@ button
     width: 200px;
     height: 80px;
     border-radius: 20% 5%;
-
+    align-self: center;
 }
 .option-text, 
 .color-button
@@ -63,10 +67,22 @@ button
     align-self: center;
     text-align: center;
 }
+.range-value-display
+{
+    font-size: 1.5rem;
+}
 .grid
 {
     height: 80vh;
     background-color: gainsboro;
     aspect-ratio: 1/1;
     border: 3px solid black;
+}
+button:hover
+{
+    transform: scale(1.1);
+}
+.active-button
+{
+    background-color: chartreuse;
 }
