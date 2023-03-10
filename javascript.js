@@ -20,6 +20,7 @@ function createGrid(gridElementsPerDimension)
         let gridRowElement=document.createElement("div");
         for(let j=1;j<=gridElementsPerDimension;j++){
             let gridElement=document.createElement("div");
+            gridElement.style.backgroundColor=backgroundColor;
             gridRowElement.appendChild(gridElement);
             gridRow.push(gridElement);
         }
@@ -28,7 +29,8 @@ function createGrid(gridElementsPerDimension)
     }
     gridArray=gridElements;
 }
-createGrid(100);
+defaultToColors();//cheap trick to make the colors default before creating the grid
+createGrid(16);
 function defaultToColors()
 {
     primaryColorElement.value="#000000";
@@ -38,7 +40,7 @@ function defaultToColors()
     secondaryColor="#ffffff";
     backgroundColor="#dcdcdc";
 }
-window.addEventListener("load", defaultToColors);
+document.addEventListener("DOMContentLoaded", defaultToColors);//when page loads
 function changeColor(colorType, color)
 {
     switch(colorType)
@@ -50,13 +52,37 @@ function changeColor(colorType, color)
             secondaryColor=color;
             break;
         case "background":
-            backgroundColor=color;
+            changeBackgroundColor(color);
             break;
         default:
             throw new Error(`Odd color type: ${colorType}`);
     }
-    console.log(`Changed color to: ${color}`)
 }
 primaryColorElement.addEventListener("change", ()=>{changeColor("primary", event.target.value);});
 secondaryColorElement.addEventListener("change", ()=>{changeColor("secondary", event.target.value)});
 backgroundColorElement.addEventListener("change", ()=>{changeColor("background", event.target.value)});
+
+function changeBackgroundColor(color)
+{
+    let oldColor=backgroundColor;
+    backgroundColor=color;
+    for(row of gridArray)
+    {
+        for(element of row)
+        {
+            let tileBackground=element.style.backgroundColor;//get the current background color of the tile
+            //start of rgb2hex converter
+            var hexDigits = new Array("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"); 
+            function rgb2hex(rgb) {
+                rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+                return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+               }
+            function hex(x) {
+                return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+               }
+            //end of rgb2hex converter, really finicky code
+            if(tileBackground==oldColor||oldColor==rgb2hex(tileBackground))//if it is equal to the old background then change it to the new one
+                element.style.backgroundColor=backgroundColor;
+        }
+    }
+}
