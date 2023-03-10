@@ -4,9 +4,12 @@ let rainbowMode=document.querySelector(".rainbow-mode");
 let bucketFill=document.querySelector(".bucket-fill");
 let erase=document.querySelector(".erase");
 let clear=document.querySelector(".clear");
+let primaryColorElement=document.querySelector(".color-1 input");
+let secondaryColorElement=document.querySelector(".color-2 input");
+let backgroundColorElement=document.querySelector(".background-color input");
 
+let primaryColor, secondaryColor, backgroundColor;
 gridWidth=grid.offsetWidth;
-console.log(gridWidth);
 gridArray=[];
 function createGrid(gridElementsPerDimension)
 {
@@ -26,3 +29,34 @@ function createGrid(gridElementsPerDimension)
     gridArray=gridElements;
 }
 createGrid(100);
+function defaultToColors()
+{
+    primaryColorElement.value="#000000";
+    secondaryColorElement.value="#ffffff";
+    backgroundColorElement.value="#dcdcdc";
+    primaryColor="#000000";
+    secondaryColor="#ffffff";
+    backgroundColor="#dcdcdc";
+}
+window.addEventListener("load", defaultToColors);
+function changeColor(colorType, color)
+{
+    switch(colorType)
+    {
+        case "primary":
+            primaryColor=color;
+            break;
+        case "secondary":
+            secondaryColor=color;
+            break;
+        case "background":
+            backgroundColor=color;
+            break;
+        default:
+            throw new Error(`Odd color type: ${colorType}`);
+    }
+    console.log(`Changed color to: ${color}`)
+}
+primaryColorElement.addEventListener("change", ()=>{changeColor("primary", event.target.value);});
+secondaryColorElement.addEventListener("change", ()=>{changeColor("secondary", event.target.value)});
+backgroundColorElement.addEventListener("change", ()=>{changeColor("background", event.target.value)});
