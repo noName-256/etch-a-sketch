@@ -4,6 +4,8 @@ let rainbowMode=document.querySelector(".rainbow-mode");
 let bucketFill=document.querySelector(".bucket-fill");
 let erase=document.querySelector(".erase");
 let clear=document.querySelector(".clear");
+let rangeSlider=document.querySelector(".slider");
+let rangeDisplay=document.querySelector(".range-value-display");
 let primaryColorElement=document.querySelector(".color-1 input");
 let secondaryColorElement=document.querySelector(".color-2 input");
 let backgroundColorElement=document.querySelector(".background-color input");
@@ -29,6 +31,17 @@ function createGrid(gridElementsPerDimension)
     }
     gridArray=gridElements;
 }
+function removeGrid()
+{
+    for(let row of gridArray)
+    {
+        for(let element of row)
+            element.remove();//removing actual elements
+    }
+    let rowElements=document.querySelectorAll(".grid > *");
+    rowElements.forEach(rowElement=>rowElement.remove());
+    gridArray=[];
+}
 defaultToColors(); //cheap trick to make the colors default before creating the grid
 createGrid(16);
 function defaultToColors()
@@ -40,7 +53,7 @@ function defaultToColors()
     secondaryColor="#ffffff";
     backgroundColor="#dcdcdc";
 }
-document.addEventListener("DOMContentLoaded", defaultToColors); //when page loads
+document.addEventListener("DOMContentLoaded", ()=>{defaultToColors(); defaultRangeSlider();}); //when page loads reset colors and range slider
 function changeColor(colorType, color)
 {
     switch(colorType)
@@ -58,9 +71,9 @@ function changeColor(colorType, color)
             throw new Error(`Odd color type: ${colorType}`);
     }
 }
-primaryColorElement.addEventListener("change", ()=>{changeColor("primary", event.target.value);});
-secondaryColorElement.addEventListener("change", ()=>{changeColor("secondary", event.target.value)});
-backgroundColorElement.addEventListener("change", ()=>{changeColor("background", event.target.value)});
+primaryColorElement.addEventListener("change", (event)=>{changeColor("primary", event.target.value);});
+secondaryColorElement.addEventListener("change", (event)=>{changeColor("secondary", event.target.value)});
+backgroundColorElement.addEventListener("change", (event)=>{changeColor("background", event.target.value)});
 
 function changeBackgroundColor(color)
 {
@@ -137,3 +150,12 @@ function clearGrid()
     }
 }
 clear.addEventListener("click", clearGrid());
+
+function defaultRangeSlider(){}
+function resizeGrid(newSize)
+{
+    removeGrid();
+    rangeDisplay.textContent=`${newSize}*${newSize}`;
+    createGrid(newSize);
+}
+rangeSlider.addEventListener("change", ()=>{resizeGrid(rangeSlider.value)});
