@@ -66,9 +66,9 @@ function changeBackgroundColor(color)
 {
     let oldColor=backgroundColor;
     backgroundColor=color;
-    for(row of gridArray)
+    for(let row of gridArray)
     {
-        for(element of row)
+        for(let element of row)
         {
             let tileBackground=element.style.backgroundColor; //get the current background color of the tile
             //start of rgb2hex converter
@@ -130,9 +130,9 @@ erase.addEventListener("click", toggleEraser);
 
 function clearGrid()
 {
-    for(row of gridArray)
+    for(let row of gridArray)
     {
-        for(element of row)
+        for(let element of row)
             element.style.backgroundColor=backgroundColor;
     }
 }
