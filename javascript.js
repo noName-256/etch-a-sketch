@@ -106,7 +106,24 @@ function toggleRainbowMode()
     {
         rainbowMode.classList.add("active-button");
         rainbowModeSwitch=true;
-        if(erase.classList.contains("active-button"))erase.classList.remove("active-button"); //toggle eraser to inactive
+        if(erase.classList.contains("active-button"))toggleEraser(); //toggle eraser to inactive
     }
 }
 rainbowMode.addEventListener("click", toggleRainbowMode);
+
+let eraserToggle=false;
+function toggleEraser()
+{
+    if(erase.classList.contains("active-button")) //if eraser is on
+    {
+        erase.classList.remove("active-button");
+        eraserToggle=false;
+    }
+    else //if eraser is off
+    {
+        erase.classList.add("active-button");
+        eraserToggle=true;
+        if(rainbowMode.classList.contains("active-button"))toggleRainbowMode();
+    }
+}
+erase.addEventListener("click", toggleEraser);
