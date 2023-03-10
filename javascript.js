@@ -29,7 +29,7 @@ function createGrid(gridElementsPerDimension)
     }
     gridArray=gridElements;
 }
-defaultToColors();//cheap trick to make the colors default before creating the grid
+defaultToColors(); //cheap trick to make the colors default before creating the grid
 createGrid(16);
 function defaultToColors()
 {
@@ -40,7 +40,7 @@ function defaultToColors()
     secondaryColor="#ffffff";
     backgroundColor="#dcdcdc";
 }
-document.addEventListener("DOMContentLoaded", defaultToColors);//when page loads
+document.addEventListener("DOMContentLoaded", defaultToColors); //when page loads
 function changeColor(colorType, color)
 {
     switch(colorType)
@@ -70,7 +70,7 @@ function changeBackgroundColor(color)
     {
         for(element of row)
         {
-            let tileBackground=element.style.backgroundColor;//get the current background color of the tile
+            let tileBackground=element.style.backgroundColor; //get the current background color of the tile
             //start of rgb2hex converter
             var hexDigits = new Array("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"); 
             function rgb2hex(rgb) {
@@ -81,7 +81,7 @@ function changeBackgroundColor(color)
                 return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
                }
             //end of rgb2hex converter, really finicky code
-            if(tileBackground==oldColor||oldColor==rgb2hex(tileBackground))//if it is equal to the old background then change it to the new one
+            if(tileBackground==oldColor||oldColor==rgb2hex(tileBackground)) //if it is equal to the old background then change it to the new one
                 element.style.backgroundColor=backgroundColor;
         }
     }
@@ -93,3 +93,20 @@ function switchColorsFunction()
     [primaryColorElement.value, secondaryColorElement.value]=[secondaryColorElement.value, primaryColorElement.value];
 }
 switchColors.addEventListener("click", switchColorsFunction);
+
+let rainbowModeSwitch=false;
+function toggleRainbowMode()
+{
+    if(rainbowMode.classList.contains("active-button")) //if rainbow mode is on
+    {
+        rainbowMode.classList.remove("active-button");
+        rainbowModeSwitch=false;
+    }
+    else //if rainbow mode is off
+    {
+        rainbowMode.classList.add("active-button");
+        rainbowModeSwitch=true;
+        if(erase.classList.contains("active-button"))erase.classList.remove("active-button"); //toggle eraser to inactive
+    }
+}
+rainbowMode.addEventListener("click", toggleRainbowMode);
