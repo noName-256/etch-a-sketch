@@ -11,7 +11,7 @@ body
     text-align: center;
     font-size: 4rem;
     font-weight: 500;
-    margin-bottom: 100px;
+    margin-bottom: 70px;
 }
 .flexbox-row
 {
@@ -82,7 +82,25 @@ button:hover
 {
     transform: scale(1.1);
 }
+/*for when the button is set active*/
 .active-button
 {
-    background-color: chartreuse;
+    background-color: cornflowerblue;
+}
+.no-gap
+{
+    gap: 0;
+}
+/*children of grid, grid rows*/
+.grid > *
+{
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+}
+/*children of the grid row, elements themselves*/
+.grid > * > *
+{
+    flex: 1 1 auto;
+    border: 1px solid black;
 }
