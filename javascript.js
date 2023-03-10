@@ -86,3 +86,10 @@ function changeBackgroundColor(color)
         }
     }
 }
+
+function switchColorsFunction()
+{
+    [primaryColor, secondaryColor]=[secondaryColor, primaryColor];
+    [primaryColorElement.value, secondaryColorElement.value]=[secondaryColorElement.value, primaryColorElement.value];
+}
+switchColors.addEventListener("click", switchColorsFunction);
