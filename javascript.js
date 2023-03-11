@@ -200,6 +200,7 @@ function fillByBucket(element, color)
 {
     //flood fill algorithm using extra grid array
     let passedCheckGrid=[];//grid to store true or false values for each element, all false initially
+    let initialColor=rgb2hex(element.style.backgroundColor);
     for(let i=0;i<dimensionSize;i++)
     {
         let passedCheckRow=[];
@@ -209,7 +210,7 @@ function fillByBucket(element, color)
     }
     function fill(row, column)
     {
-        if(row<0||column<0||row>=dimensionSize||column>=dimensionSize||passedCheckGrid[row][column]||rgb2hex(gridArray[row][column].style.backgroundColor)!=backgroundColor)return;
+        if(row<0||column<0||row>=dimensionSize||column>=dimensionSize||passedCheckGrid[row][column]||rgb2hex(gridArray[row][column].style.backgroundColor)!=initialColor)return;
         //if out of bounds or checked before or filled with non background color
         passedCheckGrid[row][column]=true;//mark passed
         let currentElement=gridArray[row][column];
