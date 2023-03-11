@@ -1,2 +1,2 @@
 # etch-a-sketch
-A small etch a sketch website
+A small painting website based on a grid of elements.
