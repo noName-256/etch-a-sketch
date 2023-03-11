@@ -77,6 +77,10 @@ button
     background-color: gainsboro;
     aspect-ratio: 1/1;
     border: 3px solid black;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 button:hover
 {
@@ -97,11 +101,19 @@ button:hover
     flex: 1 1 auto;
     display: flex;
     flex-direction: row;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 /*children of the grid row, elements themselves*/
 .grid > * > *
 {
     flex: 1 1 auto;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 .grid.with-borders > * > *
 {
