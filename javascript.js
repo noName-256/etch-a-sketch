@@ -39,7 +39,7 @@ function createGrid(gridElementsPerDimension)
     //add event listeners for each tile
     function paintTile(tile, currentColor)
     {
-        if(bucketFillSwitch){fillByBucket(tile, currentColor=="primary"?primaryColor:secondaryColor); toggleBucketFill(); return;}
+        if(bucketFillSwitch){fillByBucket(tile, currentColor=="primary"?primaryColor:secondaryColor); return;}
         if(rainbowModeSwitch)color=randomColor();
         else if(eraserToggle)color=backgroundColor;
         else if(currentColor=="primary")color=primaryColor;
