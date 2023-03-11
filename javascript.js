@@ -11,18 +11,22 @@ let primaryColorElement=document.querySelector(".color-1 input");
 let secondaryColorElement=document.querySelector(".color-2 input");
 let backgroundColorElement=document.querySelector(".background-color input");
 
-let primaryColor, secondaryColor, backgroundColor;
+let primaryColor, secondaryColor, backgroundColor, dimensionSize, bucketFillSwitch=false;
 gridWidth=grid.offsetWidth;
 gridArray=[];
+function random(x, y){return Math.floor(Math.random()*(y-x+1))+x;}
+function randomColor(){return `rgb(${random(0, 255)}, ${random(0, 255)}, ${random(0, 255)})`;}
 function createGrid(gridElementsPerDimension)
 {
+    dimensionSize=gridElementsPerDimension;
     let gridElements=[];
-    for(let i=1;i<=gridElementsPerDimension;i++)
+    for(let i=0;i<gridElementsPerDimension;i++)
     {
         let gridRow=[];
         let gridRowElement=document.createElement("div");
-        for(let j=1;j<=gridElementsPerDimension;j++){
+        for(let j=0;j<gridElementsPerDimension;j++){
             let gridElement=document.createElement("div");
+            gridElement.id=`${i}-${j}`;//set id to row and column, used to get the position of an element during event
             gridElement.style.backgroundColor=backgroundColor;
             gridRowElement.appendChild(gridElement);
             gridRow.push(gridElement);
@@ -34,10 +38,11 @@ function createGrid(gridElementsPerDimension)
     console.log(gridArray);
 
     //add event listeners for each tile
-    function random(x, y){return Math.floor(Math.random()*(y-x+1))+x;}
     function paintTile(tile, currentColor)
     {
-        if(rainbowModeSwitch)color=`rgb(${random(0, 255)}, ${random(0, 255)}, ${random(0, 255)})`;
+        console.log(`${tile.id}, ${currentColor}`);
+        if(bucketFillSwitch){fillByBucket(tile, currentColor=="primary"?primaryColor:secondaryColor); toggleBucketFill(); return;}
+        if(rainbowModeSwitch)color=randomColor();
         else if(eraserToggle)color=backgroundColor;
         else if(currentColor=="primary")color=primaryColor;
         else color=secondaryColor;
@@ -47,9 +52,9 @@ function createGrid(gridElementsPerDimension)
     {
         for(let element of row)
         {
-            element.addEventListener("mouseover", (event)=>{if(event.buttons==1) paintTile(event.target, event.ctrlKey ? "secondary" : "primary")});
+            element.addEventListener("mouseover", (event)=>{if(event.buttons==1&&!bucketFillSwitch) paintTile(event.target, event.ctrlKey ? "secondary" : "primary")});
                 //sends event only if click is pressed, sends secondary if ctrl key is pressed, otherwise primary
-            element.addEventListener("mouseleave", (event)=>{if(event.buttons==1)paintTile(event.target, event.ctrlKey ? "secondary" : "primary")});
+            element.addEventListener("mouseleave", (event)=>{if(event.buttons==1&&!bucketFillSwitch)paintTile(event.target, event.ctrlKey ? "secondary" : "primary")});
                 //this paints the tile where the click actually happened, if it ever leaves the tile
             element.addEventListener("click", (event)=>{paintTile(event.target, event.ctrlKey ? "secondary" : "primary")});
                 //this paints the tile where the click happened if it does not move to another tile, only valid way of using bucket fill
@@ -100,6 +105,17 @@ primaryColorElement.addEventListener("change", (event)=>{changeColor("primary", 
 secondaryColorElement.addEventListener("change", (event)=>{changeColor("secondary", event.target.value)});
 backgroundColorElement.addEventListener("change", (event)=>{changeColor("background", event.target.value)});
 
+//start of rgb2hex converter
+var hexDigits = new Array("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"); 
+function rgb2hex(rgb) {
+    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+   }
+function hex(x) {
+    return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+   }
+//end of rgb2hex converter, really finicky code
+
 function changeBackgroundColor(color)
 {
     let oldColor=backgroundColor;
@@ -109,16 +125,6 @@ function changeBackgroundColor(color)
         for(let element of row)
         {
             let tileBackground=element.style.backgroundColor; //get the current background color of the tile
-            //start of rgb2hex converter
-            var hexDigits = new Array("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"); 
-            function rgb2hex(rgb) {
-                rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-                return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
-               }
-            function hex(x) {
-                return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
-               }
-            //end of rgb2hex converter, really finicky code
             if(tileBackground==oldColor||oldColor==rgb2hex(tileBackground)) //if it is equal to the old background then change it to the new one
                 element.style.backgroundColor=backgroundColor;
         }
@@ -191,3 +197,39 @@ function gridLinesToggle()
     grid.classList.toggle("with-borders");
 }
 gridLinesSwitch.addEventListener("click", gridLinesToggle);
+
+function fillByBucket(element, color)
+{
+    //flood fill algorithm using extra grid array
+    let passedCheckGrid=[];//grid to store true or false values for each element, all false initially
+    for(let i=0;i<dimensionSize;i++)
+    {
+        let passedCheckRow=[];
+        for(let j=0;j<dimensionSize;j++)
+            passedCheckRow.push(false);
+        passedCheckGrid.push(passedCheckRow);
+    }
+    function fill(row, column)
+    {
+        if(row<0||column<0||row>=dimensionSize||column>=dimensionSize||passedCheckGrid[row][column]||rgb2hex(gridArray[row][column].style.backgroundColor)!=backgroundColor)return;
+        //if out of bounds or checked before or filled with non background color
+        passedCheckGrid[row][column]=true;//mark passed
+        let currentElement=gridArray[row][column];
+        if(rainbowModeSwitch)color=randomColor();//color changes to random if rainbow mode
+        currentElement.style.backgroundColor=color;
+        fill(row-1, column);
+        fill(+row+1, column);
+        fill(row, column-1);
+        fill(row, +column+1);
+    }
+    let rowColumn=element.id.split("-");
+    let currentRow=rowColumn[0], currentColumn=rowColumn[1];
+    fill(currentRow, currentColumn);
+}
+function toggleBucketFill()
+{
+    if(erase.classList.contains("active-button"))toggleEraser();
+    bucketFill.classList.toggle("active-button");
+    bucketFillSwitch=!bucketFillSwitch;
+}
+bucketFill.addEventListener("click", toggleBucketFill);
