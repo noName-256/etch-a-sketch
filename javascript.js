@@ -31,6 +31,25 @@ function createGrid(gridElementsPerDimension)
         gridElements.push(gridRow);
     }
     gridArray=gridElements;
+    console.log(gridArray);
+
+    //add event listeners for each tile
+    function random(x, y){return Math.floor(Math.random()*(y-x+1))+x;}
+    function paintTile(tile, currentColor)
+    {
+        if(rainbowModeSwitch)color=`rgb(${random(0, 255)}, ${random(0, 255)}, ${random(0, 255)})`;
+        else if(eraserToggle)color=backgroundColor;
+        else if(currentColor=="primary")color=primaryColor;
+        else color=secondaryColor;
+        tile.style.backgroundColor=color;
+    }
+    gridArray.forEach(row=>row.forEach(element=>
+        element.addEventListener("mouseover", (event)=>{
+            if(event.buttons==1) paintTile(event.target, event.ctrlKey ? "secondary" : "primary")})));
+    gridArray.forEach(row=>row.forEach(element=>
+        element.addEventListener("click", (event)=>{
+            if(event.buttons==1) paintTile(event.target, event.ctrlKey ? "secondary" : "primary")})));
+        //sends event only if click is pressed, sends secondary if ctrl key is pressed, otherwise primary
 }
 function removeGrid()
 {
@@ -150,7 +169,7 @@ function clearGrid()
             element.style.backgroundColor=backgroundColor;
     }
 }
-clear.addEventListener("click", clearGrid());
+clear.addEventListener("click", clearGrid);
 
 function defaultRangeSlider(){}
 function resizeGrid(newSize)
