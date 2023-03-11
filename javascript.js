@@ -35,12 +35,10 @@ function createGrid(gridElementsPerDimension)
         gridElements.push(gridRow);
     }
     gridArray=gridElements;
-    console.log(gridArray);
 
     //add event listeners for each tile
     function paintTile(tile, currentColor)
     {
-        console.log(`${tile.id}, ${currentColor}`);
         if(bucketFillSwitch){fillByBucket(tile, currentColor=="primary"?primaryColor:secondaryColor); toggleBucketFill(); return;}
         if(rainbowModeSwitch)color=randomColor();
         else if(eraserToggle)color=backgroundColor;
