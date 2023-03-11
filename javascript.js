@@ -43,13 +43,18 @@ function createGrid(gridElementsPerDimension)
         else color=secondaryColor;
         tile.style.backgroundColor=color;
     }
-    gridArray.forEach(row=>row.forEach(element=>
-        element.addEventListener("mouseover", (event)=>{
-            if(event.buttons==1) paintTile(event.target, event.ctrlKey ? "secondary" : "primary")})));
-    gridArray.forEach(row=>row.forEach(element=>
-        element.addEventListener("click", (event)=>{
-            if(event.buttons==1) paintTile(event.target, event.ctrlKey ? "secondary" : "primary")})));
-        //sends event only if click is pressed, sends secondary if ctrl key is pressed, otherwise primary
+    for(let row of gridArray)
+    {
+        for(let element of row)
+        {
+            element.addEventListener("mouseover", (event)=>{if(event.buttons==1) paintTile(event.target, event.ctrlKey ? "secondary" : "primary")});
+                //sends event only if click is pressed, sends secondary if ctrl key is pressed, otherwise primary
+            element.addEventListener("mouseleave", (event)=>{if(event.buttons==1)paintTile(event.target, event.ctrlKey ? "secondary" : "primary")});
+                //this paints the tile where the click actually happened, if it ever leaves the tile
+            element.addEventListener("click", (event)=>{paintTile(event.target, event.ctrlKey ? "secondary" : "primary")});
+                //this paints the tile where the click happened if it does not move to another tile, only valid way of using bucket fill
+        }
+    }
 }
 function removeGrid()
 {
